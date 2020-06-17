@@ -24,9 +24,13 @@ class StudentListAdapter(
 
     override fun onBindViewHolder(viewholder: StudentViewHolder, position: Int) {
 
+        /*
         val list = studentList
         if (list != null) {
             viewholder.bind(list[position])
+        }*/
+        studentList?.let {
+            viewholder.bind(it[position])
         }
     }
 

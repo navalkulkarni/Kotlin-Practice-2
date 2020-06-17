@@ -1,5 +1,6 @@
 package com.mindorks.kotlinlecture4.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -45,12 +46,19 @@ class MainActivity : AppCompatActivity() {
 
         topperStudentName = findViewById(R.id.topperStudentName)
 
-        getTopperStudentButton = findViewById(R.id.buttonGetTopper)
+        getTopperStudentButton = findViewById<Button>(R.id.buttonGetTopper).also{
+            it.setOnClickListener {  view->
+                topperStudent = mainViewModel.getTopperStudent(this@MainActivity)
+                topperStudentName.text = topperStudent?.userName ?: "Unknown"
+            }
+        }
+
+        /*
         getTopperStudentButton.setOnClickListener{ view->
             topperStudent = mainViewModel.getTopperStudent(this@MainActivity)
             topperStudentName.text = topperStudent?.userName ?: "Unknown"
         }
-
+        */
         getStudentList = findViewById(R.id.buttonGetStudentList)
         getStudentList.setOnClickListener{view->
             val studentList = mainViewModel.getListOfStudent(this@MainActivity)
@@ -76,6 +84,22 @@ class MainActivity : AppCompatActivity() {
         studentRecyclerView.adapter = studentListAdapter
 
         studentRecyclerView.layoutManager = LinearLayoutManager(this)
+
+    }
+
+    fun startMainActivity(){
+        val intent = Intent(this,MainActivity::class.java).apply {
+            putExtra("Param1",1)
+            putExtra("Param2",2)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val isStarted:Boolean = Intent(this,MainActivity::class.java).run {
+            putExtra("Param1",1)
+            putExtra("Param2",2)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivityIfNeeded(intent,100)
+        }
 
     }
 
