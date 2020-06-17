@@ -11,16 +11,13 @@ class MainViewModel(val networkService: NetworkService) {
     fun getTopperStudent(context: Context): Student? {
 
         val isInternetConnected = NetworkUtils.isInternetConnected(context)
-        val student: Student?
 
-        if (isInternetConnected) {
+        return if (isInternetConnected) {
             val apiStudent = networkService.getTopperStudent()
-            student = StudentMapper.getInstance().map(apiStudent)
+            StudentMapper.map(apiStudent)
         } else {
-            student = null
+             null
         }
-
-        return student
     }
 
     fun getListOfStudent(context: Context): List<Student> {
@@ -34,7 +31,8 @@ class MainViewModel(val networkService: NetworkService) {
 
             for (apiStudent in listApiStudent) {
 
-                val student = StudentMapper.getInstance().map(apiStudent)
+                val student = StudentMapper
+                    .map(apiStudent)
 
                 studentList.add(student)
             }
@@ -45,13 +43,11 @@ class MainViewModel(val networkService: NetworkService) {
     }
 
     fun getStudentGrade(averageMark: Int): String {
-        val grade: String
-
-        when (averageMark) {
-            in 95..99 -> grade = "A"
-            100 -> grade = "A+"
-            in 90..94 -> grade = "B"
-            else -> grade = "C"
+        val grade: String = when (averageMark) {
+            in 95..99 -> "A"
+            100 -> "A+"
+            in 90..94 -> "B"
+            else -> "C"
         }
         
         return grade
