@@ -45,39 +45,27 @@ class MainActivity : AppCompatActivity(), OnRecyclerViewItemClickListener {
         topperStudentName = findViewById(R.id.topperStudentName)
 
         getTopperStudentButton = findViewById(R.id.buttonGetTopper)
-        getTopperStudentButton.setOnClickListener(object : View.OnClickListener {
+        getTopperStudentButton.setOnClickListener{ view->
+            topperStudent = mainViewModel.getTopperStudent(this@MainActivity)
+            topperStudentName.text = topperStudent?.userName ?: "Unknown"
+        }
 
-            override fun onClick(v: View?) {
-                topperStudent = mainViewModel.getTopperStudent(this@MainActivity)
-                topperStudentName.text = topperStudent?.userName ?: "Unknown"
 
-            }
 
-        })
 
         getStudentList = findViewById(R.id.buttonGetStudentList)
-        getStudentList.setOnClickListener(object : View.OnClickListener {
-
-            override fun onClick(v: View?) {
-                val studentList = mainViewModel.getListOfStudent(this@MainActivity)
-                studentListAdapter.updateList(studentList)
-            }
-
-        })
+        getStudentList.setOnClickListener{view->
+            val studentList = mainViewModel.getListOfStudent(this@MainActivity)
+            studentListAdapter.updateList(studentList)
+        }
 
         showStudentGrade = findViewById(R.id.buttonShowGrade)
-        showStudentGrade.setOnClickListener(object : View.OnClickListener {
-
-            override fun onClick(v: View?) {
-
-                topperStudent?.let {
-                    val studentGrade = mainViewModel.getStudentGrade(it.averageMark)
-                    Toast.makeText(this@MainActivity, studentGrade, Toast.LENGTH_SHORT).show()
-                }
-
+        showStudentGrade.setOnClickListener{view->
+            topperStudent?.let {
+                val studentGrade = mainViewModel.getStudentGrade(it.averageMark)
+                Toast.makeText(this@MainActivity, studentGrade, Toast.LENGTH_SHORT).show()
             }
-
-        })
+        }
 
     }
 
